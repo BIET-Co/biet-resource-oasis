@@ -1,6 +1,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const CtaSection = () => {
   return (
@@ -20,15 +21,15 @@ const CtaSection = () => {
             
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
-                <a href="#resources" className="px-8">
+                <Link to="/resources" className="px-8">
                   Explore Resources
-                </a>
+                </Link>
               </Button>
               
               <Button asChild size="lg" variant="outline" className="border-primary/20 hover:bg-primary/5">
-                <a href="#" className="px-8">
+                <Link to="/contribution" className="px-8">
                   Submit a Resource
-                </a>
+                </Link>
               </Button>
             </div>
           </div>

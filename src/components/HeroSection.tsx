@@ -1,6 +1,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   return (
@@ -24,9 +25,9 @@ const HeroSection = () => {
             One destination for all your academic needs – Notes, Question Papers, and More.
           </p>
           <Button asChild size="lg" className="animate-bounce-in" variant="default">
-            <a href="#resources" className="text-lg px-8 py-6">
+            <Link to="/resources" className="text-lg px-8 py-6">
               Explore Resources
-            </a>
+            </Link>
           </Button>
         </div>
       </div>
