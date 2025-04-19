@@ -8,7 +8,7 @@ import Index from "./pages/Index";
 import About from "./pages/About";
 import Resources from "./pages/Resources";
 import Contribution from "./pages/Contribution";
-import Contact from "./pages/Contact";
+import Team from "./pages/Team";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,7 +24,7 @@ const App = () => (
           <Route path="/about" element={<About />} />
           <Route path="/resources" element={<Resources />} />
           <Route path="/contribution" element={<Contribution />} />
-          <Route path="/contact" element={<Contact />} />
+          <Route path="/team" element={<Team />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

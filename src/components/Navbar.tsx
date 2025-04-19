@@ -24,8 +24,8 @@ const Navbar = () => {
           <Link to="/contribution" className="text-sm font-medium text-foreground/80 transition-colors hover:text-foreground">
             Contribution
           </Link>
-          <Link to="/contact" className="text-sm font-medium text-foreground/80 transition-colors hover:text-foreground">
-            Contact
+          <Link to="/team" className="text-sm font-medium text-foreground/80 transition-colors hover:text-foreground">
+            Team
           </Link>
           <Button asChild size="sm" variant="default">
             <Link to="/resources">Explore Resources</Link>
