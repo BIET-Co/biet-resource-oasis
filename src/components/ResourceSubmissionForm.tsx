@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Card, CardHeader, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -8,15 +9,17 @@ import { useToast } from "@/hooks/use-toast";
 import emailjs from '@emailjs/browser';
 import { useNavigate } from "react-router-dom";
 
+// Replace these with your actual EmailJS credentials
+const EMAIL_CONFIG = {
+  publicKey: "YOUR_PUBLIC_KEY",
+  templateId: "YOUR_TEMPLATE_ID",
+  serviceId: "YOUR_SERVICE_ID"
+};
+
 const ResourceSubmissionForm = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [emailConfig, setEmailConfig] = useState({
-    publicKey: localStorage.getItem('emailjs_public_key') || '',
-    templateId: localStorage.getItem('emailjs_template_id') || '',
-    serviceId: localStorage.getItem('emailjs_service_id') || '',
-  });
   const [formData, setFormData] = useState({
     name: "",
     usn: "",
@@ -32,24 +35,14 @@ const ResourceSubmissionForm = () => {
     setFormData(prev => ({ ...prev, [id]: value }));
   };
 
-  const handleConfigChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-    localStorage.setItem(id, value);
-    setEmailConfig(prev => ({ ...prev, [id.replace('emailjs_', '')]: value }));
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
-      if (!emailConfig.publicKey || !emailConfig.templateId || !emailConfig.serviceId) {
-        throw new Error("Please fill in all EmailJS credentials below the form.");
-      }
-
       await emailjs.send(
-        emailConfig.serviceId,
-        emailConfig.templateId,
+        EMAIL_CONFIG.serviceId,
+        EMAIL_CONFIG.templateId,
         {
           from_name: formData.name,
           usn: formData.usn,
@@ -59,7 +52,7 @@ const ResourceSubmissionForm = () => {
           resource_url: formData.resourceUrl,
           description: formData.description
         },
-        emailConfig.publicKey
+        EMAIL_CONFIG.publicKey
       );
 
       toast({
@@ -185,42 +178,6 @@ const ResourceSubmissionForm = () => {
               {isSubmitting ? "Submitting..." : "Submit Resource"}
             </Button>
           </form>
-
-          <div className="mt-8 pt-6 border-t">
-            <h3 className="text-lg font-semibold mb-4">EmailJS Configuration</h3>
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="emailjs_publicKey">Public Key</Label>
-                <Input
-                  id="emailjs_publicKey"
-                  value={emailConfig.publicKey}
-                  onChange={handleConfigChange}
-                  placeholder="Enter EmailJS Public Key"
-                  className="mt-1"
-                />
-              </div>
-              <div>
-                <Label htmlFor="emailjs_templateId">Template ID</Label>
-                <Input
-                  id="emailjs_templateId"
-                  value={emailConfig.templateId}
-                  onChange={handleConfigChange}
-                  placeholder="Enter EmailJS Template ID"
-                  className="mt-1"
-                />
-              </div>
-              <div>
-                <Label htmlFor="emailjs_serviceId">Service ID</Label>
-                <Input
-                  id="emailjs_serviceId"
-                  value={emailConfig.serviceId}
-                  onChange={handleConfigChange}
-                  placeholder="Enter EmailJS Service ID"
-                  className="mt-1"
-                />
-              </div>
-            </div>
-          </div>
         </CardContent>
       </Card>
     </div>
