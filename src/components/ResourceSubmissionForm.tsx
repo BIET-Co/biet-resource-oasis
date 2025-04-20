@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Card, CardHeader, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -7,10 +6,12 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import emailjs from '@emailjs/browser';
-import { Link } from "@/components/ui/link";
+import { useNavigate } from "react-router-dom";
+import { EMAIL_CONFIG } from "@/utils/emailConfig";
 
 const ResourceSubmissionForm = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -32,17 +33,13 @@ const ResourceSubmissionForm = () => {
     setIsSubmitting(true);
 
     try {
-      const emailJsPublicKey = localStorage.getItem('emailjs_public_key');
-      const emailJsTemplateId = localStorage.getItem('emailjs_template_id');
-      const emailJsServiceId = localStorage.getItem('emailjs_service_id');
-
-      if (!emailJsPublicKey || !emailJsTemplateId || !emailJsServiceId) {
-        throw new Error("EmailJS credentials not found. Please configure them first.");
+      if (!EMAIL_CONFIG.publicKey || !EMAIL_CONFIG.templateId || !EMAIL_CONFIG.serviceId) {
+        throw new Error("Please configure EmailJS credentials first.");
       }
 
       await emailjs.send(
-        emailJsServiceId,
-        emailJsTemplateId,
+        EMAIL_CONFIG.serviceId,
+        EMAIL_CONFIG.templateId,
         {
           from_name: formData.name,
           usn: formData.usn,
@@ -52,7 +49,7 @@ const ResourceSubmissionForm = () => {
           resource_url: formData.resourceUrl,
           description: formData.description
         },
-        emailJsPublicKey
+        EMAIL_CONFIG.publicKey
       );
 
       toast({
@@ -60,16 +57,7 @@ const ResourceSubmissionForm = () => {
         description: "Your resource has been submitted successfully.",
       });
 
-      // Reset form
-      setFormData({
-        name: "",
-        usn: "",
-        college: "",
-        resourceTitle: "",
-        resourceType: "",
-        resourceUrl: "",
-        description: ""
-      });
+      navigate("/resources");
     } catch (error) {
       toast({
         variant: "destructive",
