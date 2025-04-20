@@ -1,7 +1,7 @@
 
 import React from "react";
 import Navbar from "@/components/Navbar";
-import CtaSection from "@/components/CtaSection";
+import ResourceSubmissionForm from "@/components/ResourceSubmissionForm";
 import Footer from "@/components/Footer";
 
 const Contribution = () => {
@@ -9,7 +9,7 @@ const Contribution = () => {
     <div className="min-h-screen bg-background flex flex-col">
       <Navbar />
       <main className="flex-grow">
-        <CtaSection />
+        <ResourceSubmissionForm />
       </main>
       <Footer />
     </div>
